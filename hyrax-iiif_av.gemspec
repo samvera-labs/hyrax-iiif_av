@@ -1,4 +1,5 @@
-$:.push File.expand_path("lib", __dir__)
+# frozen_string_literal: true
+$LOAD_PATH.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
 require "hyrax/iiif_av/version"

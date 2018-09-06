@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 begin
   require 'bundler/setup'
 rescue LoadError
@@ -37,7 +38,7 @@ task default: :ci
 
 desc 'Run style checker'
 RuboCop::RakeTask.new(:rubocop) do |task|
-  task.fail_on_error = false
+  task.fail_on_error = true
 end
 
 RSpec::Core::RakeTask.new(:spec)
