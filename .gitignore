@@ -2,3 +2,5 @@
 log/*.log
 pkg/
 .internal_test_app/
+
+.internal_test_app

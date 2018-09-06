@@ -14,8 +14,8 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-APP_RAKEFILE = File.expand_path(".internal_test_app/Rakefile", __dir__)
-load 'rails/tasks/engine.rake'
+# APP_RAKEFILE = File.expand_path(".internal_test_app/Rakefile", __dir__)
+# load 'rails/tasks/engine.rake'
 
 load 'rails/tasks/statistics.rake'
 
@@ -28,5 +28,7 @@ Rake::TestTask.new(:test) do |t|
   t.pattern = 'test/**/*_test.rb'
   t.verbose = false
 end
+
+require 'engine_cart/rake_task'
 
 task default: :test
