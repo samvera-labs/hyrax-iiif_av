@@ -29,6 +29,18 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = false
 end
 
+require 'rspec/core/rake_task'
 require 'engine_cart/rake_task'
+require 'rubocop/rake_task'
 
-task default: :test
+task default: :ci
+
+desc 'Run style checker'
+RuboCop::RakeTask.new(:rubocop) do |task|
+  task.fail_on_error = false
+end
+
+RSpec::Core::RakeTask.new(:spec)
+
+desc "CI build"
+task ci: [:rubocop, "engine_cart:generate", :spec]

@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   # Bump to ~> 0.5 after release of iiif_manifest
   s.add_dependency "iiif_manifest", "~> 0.4"
 
+  s.add_development_dependency 'bixby'
   s.add_development_dependency 'engine_cart', '~> 2.0'
   s.add_development_dependency "rspec-rails", "~> 3.8"
 end
