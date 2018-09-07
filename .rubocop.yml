@@ -18,6 +18,7 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/support/shared_examples/concerns/iiif_av/controller_behavior_spec.rb'
     - 'spec/support/shared_examples/concerns/iiif_av/displays_content_spec.rb'
+    - 'spec/support/shared_examples/concerns/iiif_av/displays_iiif_spec.rb'
 
 RSpec/VerifiedDoubles:
   Exclude:
