@@ -1,0 +1,24 @@
+language: ruby
+dist: trusty
+
+cache:
+  bundler: true
+
+before_install:
+  - gem update --system
+  - gem install bundler
+
+rvm:
+  - 2.5.0
+
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+    - ENGINE_CART_RAILS_OPTIONS='--skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test'
+  # Travis should check every minor version in a range of supported versions, because
+  # rails does not follow sem-ver conventions, see http://guides.rubyonrails.org/maintenance_policy.html
+  # It should be sufficient to test only the latest of the patch versions for a minor version, they
+  # should be compatible across patch versions (only bug fixes are released in patch versions).
+  matrix:
+    - "RAILS_VERSION=5.1.4"
+
