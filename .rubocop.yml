@@ -13,3 +13,11 @@ Naming/FileName:
 Bundler/DuplicatedGem:
   Exclude:
     - 'Gemfile'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/support/shared_examples/concerns/iiif_controller_behavior_spec.rb'
+
+RSpec/VerifiedDoubles:
+  Exclude:
+    - 'spec/support/shared_examples/concerns/iiif_controller_behavior_spec.rb'

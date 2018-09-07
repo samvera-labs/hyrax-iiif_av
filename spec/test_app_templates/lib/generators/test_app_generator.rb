@@ -8,6 +8,13 @@ class TestAppGenerator < Rails::Generators::Base
   # if you need to generate any additional configuration
   # into the test app, this generator will be run immediately
   # after setting up the application
+  def install_hyrax
+    generate 'hyrax:install', '-f'
+  end
+
+  def create_generic_work
+    generate 'hyrax:work GenericWork'
+  end
 
   def install_engine
     generate 'hyrax-iiif_av:install'

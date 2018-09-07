@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 $LOAD_PATH.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
@@ -18,6 +19,8 @@ Gem::Specification.new do |s|
     f.match(%r{^(test|spec|features)/})
   end
 
+  s.add_dependency "rails", "~>5.1"
+  s.add_dependency "blacklight"
   s.add_dependency "hyrax", "~> 2.1"
   # Bump to ~> 0.5 after release of iiif_manifest
   s.add_dependency "iiif_manifest", "~> 0.4"
