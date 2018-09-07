@@ -16,15 +16,15 @@ Bundler/DuplicatedGem:
 
 Metrics/BlockLength:
   Exclude:
-    - 'spec/support/shared_examples/concerns/iiif_av/controller_behavior_spec.rb'
-    - 'spec/support/shared_examples/concerns/iiif_av/displays_content_spec.rb'
-    - 'spec/support/shared_examples/concerns/iiif_av/displays_iiif_spec.rb'
+    - 'lib/hyrax/iiif_av/spec/shared_specs/controller_behavior.rb'
+    - 'lib/hyrax/iiif_av/spec/shared_specs/displays_content.rb'
+    - 'lib/hyrax/iiif_av/spec/shared_specs/displays_iiif.rb'
 
 RSpec/VerifiedDoubles:
   Exclude:
-    - 'spec/support/shared_examples/concerns/iiif_av/controller_behavior_spec.rb'
-    - 'spec/support/shared_examples/concerns/iiif_av/displays_content_spec.rb'
+    - 'lib/hyrax/iiif_av/spec/shared_specs/controller_behavior.rb'
+    - 'lib/hyrax/iiif_av/spec/shared_specs/displays_content.rb'
 
 RSpec/ExampleLength:
   Exclude:
-    - 'spec/support/shared_examples/concerns/iiif_av/displays_content_spec.rb'
+    - 'lib/hyrax/iiif_av/spec/shared_specs/displays_content.rb'

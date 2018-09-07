@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'support/shared_examples/concerns/iiif_av/displays_iiif_spec'
+require 'hyrax/iiif_av/spec/shared_specs'
 
 describe Hyrax::IiifAv::DisplaysIIIF do
   before(:all) do

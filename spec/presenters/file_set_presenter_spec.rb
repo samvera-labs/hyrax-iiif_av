@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'support/shared_examples/concerns/iiif_av/displays_content_spec'
+require 'hyrax/iiif_av/spec/shared_specs'
 require_dependency 'iiif_av/file_set_presenter'
 
 describe Hyrax::IiifAv::FileSetPresenter do
