@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.shared_examples "IiifAv::DisplaysContent" do
   let(:id) { '12345' }
   let(:solr_document) { SolrDocument.new(id: id) }
