@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'support/shared_examples/concerns/iiif_controller_behavior_spec'
+require 'support/shared_examples/concerns/iiif_av/controller_behavior_spec'
 
 describe Hyrax::GenericWorksController, type: :controller do
   controller do
-    include Hyrax::IIIFControllerBehavior
+    include Hyrax::IiifAv::ControllerBehavior
   end
 
-  it_behaves_like 'IIIFControllerBehavior'
+  it_behaves_like 'IiifAv::ControllerBehavior'
 end

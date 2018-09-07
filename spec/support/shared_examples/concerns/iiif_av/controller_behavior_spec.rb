@@ -18,7 +18,7 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples "IIIFControllerBehavior" do
+RSpec.shared_examples "IiifAv::ControllerBehavior" do
   routes { Rails.application.routes }
   let(:main_app) { Rails.application.routes.url_helpers }
   let(:hyrax) { Hyrax::Engine.routes.url_helpers }
@@ -26,8 +26,8 @@ RSpec.shared_examples "IIIFControllerBehavior" do
   describe '#manifest' do
     let(:iiif_version) { 2 }
     let(:presenter) { double("presenter", iiif_version: iiif_version) }
-    let(:mime2) { Hyrax::IIIFControllerBehavior::IIIF_PRESENTATION_2_MIME }
-    let(:mime3) { Hyrax::IIIFControllerBehavior::IIIF_PRESENTATION_3_MIME }
+    let(:mime2) { Hyrax::IiifAv::ControllerBehavior::IIIF_PRESENTATION_2_MIME }
+    let(:mime3) { Hyrax::IiifAv::ControllerBehavior::IIIF_PRESENTATION_3_MIME }
     let(:manifest_factory2) { instance_double("IIIFManifest::ManifestBuilder", to_h: { test: 'manifest2' }) }
     let(:manifest_factory3) { instance_double("IIIFManifest::V3::ManifestBuilder", to_h: { test: 'manifest3' }) }
 
@@ -75,7 +75,7 @@ RSpec.shared_examples "IIIFControllerBehavior" do
 
       it 'returns IIIF default version manifest' do
         get :manifest, params: { id: 'testwork', format: :json }
-        expect(response.headers['Content-Type']).to eq Hyrax::IIIFControllerBehavior::IIIF_PRESENTATION_2_MIME
+        expect(response.headers['Content-Type']).to eq Hyrax::IiifAv::ControllerBehavior::IIIF_PRESENTATION_2_MIME
         # the following code assumes Hyrax::GenericWorksController::IIIF_DEFAULT_VERSION is 2;
         # if this constant changes, this code also needs to be changed accordingly
         expect(response.body).to eq "{\"test\":\"manifest2\"}"
@@ -98,7 +98,7 @@ RSpec.shared_examples "IIIFControllerBehavior" do
 
       it 'returns manifest with the highest accepted IIIF version' do
         get :manifest, params: { id: 'testwork', format: :json }
-        expect(response.headers['Content-Type']).to eq Hyrax::IIIFControllerBehavior::IIIF_PRESENTATION_2_MIME
+        expect(response.headers['Content-Type']).to eq Hyrax::IiifAv::ControllerBehavior::IIIF_PRESENTATION_2_MIME
         expect(response.body).to eq "{\"test\":\"manifest2\"}"
       end
 
@@ -155,7 +155,7 @@ RSpec.shared_examples "IIIFControllerBehavior" do
 
       it 'returns manifest with the highest accepted IIIF version' do
         get :manifest, params: { id: 'testwork', format: :json }
-        expect(response.headers['Content-Type']).to eq Hyrax::IIIFControllerBehavior::IIIF_PRESENTATION_2_MIME
+        expect(response.headers['Content-Type']).to eq Hyrax::IiifAv::ControllerBehavior::IIIF_PRESENTATION_2_MIME
         expect(response.body).to eq "{\"test\":\"manifest2\"}"
       end
 
