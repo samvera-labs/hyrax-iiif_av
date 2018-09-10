@@ -19,11 +19,14 @@ Metrics/BlockLength:
     - 'lib/hyrax/iiif_av/spec/shared_specs/controller_behavior.rb'
     - 'lib/hyrax/iiif_av/spec/shared_specs/displays_content.rb'
     - 'lib/hyrax/iiif_av/spec/shared_specs/displays_iiif_av.rb'
+    - 'spec/controllers/generic_works_controller_spec.rb'
+    - 'spec/helpers/iiif_av_helper_spec.rb'
 
 RSpec/VerifiedDoubles:
   Exclude:
     - 'lib/hyrax/iiif_av/spec/shared_specs/controller_behavior.rb'
     - 'lib/hyrax/iiif_av/spec/shared_specs/displays_content.rb'
+    - 'spec/helpers/iiif_av_helper_spec.rb'
 
 RSpec/ExampleLength:
   Exclude:
