@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'hyrax/iiif_av/spec/shared_specs'
+require_dependency 'iiif_av/displays_iiif'
 
 describe Hyrax::IiifAv::DisplaysIIIF do
   before(:all) do
