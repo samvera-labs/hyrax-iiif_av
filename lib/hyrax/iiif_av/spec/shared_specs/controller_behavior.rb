@@ -16,8 +16,6 @@
 # limitations under the License.
 # ---  END LICENSE_HEADER BLOCK  ---
 
-require 'rails_helper'
-
 RSpec.shared_examples "IiifAv::ControllerBehavior" do
   routes { Rails.application.routes }
   let(:main_app) { Rails.application.routes.url_helpers }

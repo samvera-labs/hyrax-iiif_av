@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'support/shared_examples/concerns/iiif_av/controller_behavior_spec'
+require 'hyrax/iiif_av/spec/shared_specs'
 
 describe Hyrax::GenericWorksController, type: :controller do
   controller do
