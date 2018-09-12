@@ -76,8 +76,8 @@ module Hyrax
 
         def video_content
           # @see https://github.com/samvera-labs/iiif_manifest
-          if solr_document['files_metadata_ssi'].present?
-            files_metadata = JSON.parse(solr_document['files_metadata_ssi'])
+          if solr_document['derivatives_metadata_ssi'].present?
+            files_metadata = JSON.parse(solr_document['derivatives_metadata_ssi'])
             external_files = files_metadata.select { |f| f['external_file_uri'].present? }
             return external_files.map { |f| video_display_content(f['external_file_uri'], f['label']) } unless external_files.empty?
           end
@@ -94,8 +94,8 @@ module Hyrax
         end
 
         def audio_content
-          if solr_document['files_metadata_ssi'].present?
-            files_metadata = JSON.parse(solr_document['files_metadata_ssi'])
+          if solr_document['derivatives_metadata_ssi'].present?
+            files_metadata = JSON.parse(solr_document['derivatives_metadata_ssi'])
             external_files = files_metadata.select { |f| f['external_file_uri'].present? }
             return external_files.map { |f| audio_display_content(f['external_file_uri'], f['label']) } unless external_files.empty?
           end
