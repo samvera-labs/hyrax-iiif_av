@@ -2,12 +2,11 @@
 
 require 'rails_helper'
 require 'hyrax/iiif_av/spec/shared_specs'
-require_dependency 'iiif_av/displays_iiif'
 
-describe Hyrax::IiifAv::DisplaysIIIF do
+describe Hyrax::IiifAv::DisplaysIiifAv do
   before(:all) do
     class IiifAvWorkPresenter < Hyrax::GenericWorkPresenter
-      include Hyrax::IiifAv::DisplaysIIIF
+      include Hyrax::IiifAv::DisplaysIiifAv
     end
   end
 
@@ -17,5 +16,5 @@ describe Hyrax::IiifAv::DisplaysIIIF do
 
   let(:described_class) { IiifAvWorkPresenter }
 
-  it_behaves_like 'IiifAv::DisplaysIIIF'
+  it_behaves_like 'IiifAv::DisplaysIiifAv'
 end

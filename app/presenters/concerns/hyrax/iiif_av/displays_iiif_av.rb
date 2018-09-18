@@ -21,7 +21,7 @@ require 'hyrax/iiif_av/manifest_range'
 
 module Hyrax
   module IiifAv
-    module DisplaysIIIF
+    module DisplaysIiifAv
       extend ActiveSupport::Concern
 
       IIIF_DEFAULT_VERSION = 2
@@ -37,7 +37,7 @@ module Hyrax
       end
 
       alias universal_viewer? iiif_viewer?
-      deprecation_deprecate universal_viewer?: "use iiif_viewer? instead"
+      # deprecation_deprecate universal_viewer?: "use iiif_viewer? instead"
 
       def iiif_viewer
         if representative_presenter.video? || representative_presenter.audio?
