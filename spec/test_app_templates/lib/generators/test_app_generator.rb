@@ -18,6 +18,10 @@ class TestAppGenerator < Rails::Generators::Base
   end
 
   def install_engine
-    generate 'hyrax-iiif_av:install'
+    generate 'hyrax:iiif_av:install'
+  end
+
+  def install_avalon_player
+    generate 'hyrax:iiif_av:install_avalon_player'
   end
 end

@@ -1,3 +1,2 @@
-gem 'blacklight'
 gem 'hyrax'
 gem 'iiif_manifest', github: 'samvera-labs/iiif_manifest'

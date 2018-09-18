@@ -13,7 +13,7 @@ describe Hyrax::GenericWorksController, type: :controller do
   context 'views' do
     before(:all) do
       class IiifAvWorkPresenter < Hyrax::GenericWorkPresenter
-        include Hyrax::IiifAv::DisplaysIIIF
+        include Hyrax::IiifAv::DisplaysIiifAv
       end
     end
 
