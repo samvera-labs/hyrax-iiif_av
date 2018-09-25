@@ -8,9 +8,11 @@ class TestAppGenerator < Rails::Generators::Base
   # into the test app, this generator will be run immediately
   # after setting up the application
 
-  # FIXME: Need to require 'rails/generators' in the test app somewhere before hyrax:install:migrations generator is run
   def install_hyrax
+    # Need to require 'rails/generators/actions' before hyrax:install:migrations generator is run
+    require 'rails/generators/actions'
     generate 'hyrax:install', '-f'
+    rake('db:migrate')
   end
 
   def create_generic_work
@@ -23,5 +25,9 @@ class TestAppGenerator < Rails::Generators::Base
 
   def install_avalon_player
     generate 'hyrax:iiif_av:install_avalon_player'
+  end
+
+  def inject_work_type_mixins
+    generate 'hyrax:iiif_av:add_to_work_type GenericWork'
   end
 end
