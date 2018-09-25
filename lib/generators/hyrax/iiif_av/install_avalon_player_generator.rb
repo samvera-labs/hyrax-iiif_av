@@ -4,6 +4,8 @@ require 'rails/generators'
 module Hyrax
   module IiifAv
     class InstallAvalonPlayerGenerator < Rails::Generators::Base
+      source_root File.expand_path('../templates', __FILE__)
+
       def install_dependencies
         gem 'webpacker'
         gem 'react-rails'
