@@ -20,7 +20,7 @@ require 'iiif_manifest'
 
 module Hyrax
   module IiifAv
-    # This gets mixed into FileSetPresenter in order to create
+    # This gets mixed into IiifFileSetPresenter in order to create
     # a canvas on a IIIF manifest
     module DisplaysContent
       extend ActiveSupport::Concern

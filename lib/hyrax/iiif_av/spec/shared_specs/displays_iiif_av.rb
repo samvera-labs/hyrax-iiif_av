@@ -17,7 +17,7 @@
 # limitations under the License.
 # ---  END LICENSE_HEADER BLOCK  ---
 
-RSpec.shared_examples "IiifAv::DisplaysIIIF" do
+RSpec.shared_examples "IiifAv::DisplaysIiifAv" do
   let(:solr_document) { SolrDocument.new }
   let(:request) { double }
   let(:ability) { nil }

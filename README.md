@@ -21,18 +21,15 @@ module Hyrax
 end
 ```
 
-1. Setup work presenter:
+2. Setup work presenter:
 ```ruby
-require_dependency 'iiif_av/displays_iiif'
-require_dependency 'iiif_av/file_set_presenter'
-
 # Generated via
 #  `rails generate hyrax:work GenericWork`
 module Hyrax
   class GenericWorkPresenter < Hyrax::WorkShowPresenter
-    include Hyrax::IiifAv::DisplaysIIIF
+    include Hyrax::IiifAv::DisplaysIiifAv
 
-    Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::FileSetPresenter
+    Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
 
     # Optional override to select iiif viewer to render
     # default :avalon for AV, :universal_viewer for images
@@ -43,4 +40,4 @@ module Hyrax
 end
 ```
 
-1. Ingest audiovisual content and see the Avalon IIIF viewer render on the work show page.
+3. Ingest audiovisual content and see the Avalon IIIF viewer render on the work show page.
