@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'active-fedora', '=11.5.2'
 
   s.add_development_dependency 'bixby'
+  s.add_development_dependency 'coffee-rails'
   s.add_development_dependency 'engine_cart', '~> 2.0'
   s.add_development_dependency 'factory_bot_rails'
   s.add_development_dependency 'rails-controller-testing'
