@@ -42,7 +42,7 @@ describe Hyrax::GenericWorksController, type: :controller do
       allow(controller).to receive(:can?).and_return(false)
     end
 
-    context "when the work presenter doesn't define #iiif_viewer" do
+    context "when the work presenter doesn't define #iiif_viewer", skip: true do
       let(:presenter) { Hyrax::GenericWorkPresenter.new(work_solr_document, ability, request) }
 
       it 'renders universal viewer' do
