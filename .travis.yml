@@ -21,4 +21,3 @@ env:
   # should be compatible across patch versions (only bug fixes are released in patch versions).
   matrix:
     - "RAILS_VERSION=5.1.4"
-

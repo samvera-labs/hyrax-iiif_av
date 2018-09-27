@@ -22,11 +22,14 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~>5.1"
   s.add_dependency "blacklight"
   s.add_dependency "hyrax", "~> 2.1"
-  s.add_dependency 'active-fedora', '=11.5.2'
   # Bump to ~> 0.5 after release of iiif_manifest
   s.add_dependency "iiif_manifest", "~> 0.4"
+  s.add_dependency 'active-fedora', '=11.5.2'
 
   s.add_development_dependency 'bixby'
+  s.add_development_dependency 'coffee-rails'
   s.add_development_dependency 'engine_cart', '~> 2.0'
-  s.add_development_dependency "rspec-rails", "~> 3.8"
+  s.add_development_dependency 'factory_bot_rails'
+  s.add_development_dependency 'rails-controller-testing'
+  s.add_development_dependency 'rspec-rails', '~> 3.8'
 end

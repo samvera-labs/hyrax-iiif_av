@@ -22,6 +22,11 @@ module Hyrax
     module ControllerBehavior
       extend ActiveSupport::Concern
 
+      included do
+        prepend_view_path(Hyrax::IiifAv::Engine.view_path)
+        helper Hyrax::IiifAv::IiifAvHelper
+      end
+
       IIIF_PRESENTATION_2_MIME = 'application/json;profile=http://iiif.io/api/presentation/2/context.json'
       IIIF_PRESENTATION_3_MIME = 'application/json;profile=http://iiif.io/api/presentation/3/context.json'
 
