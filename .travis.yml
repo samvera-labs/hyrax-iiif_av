@@ -7,6 +7,9 @@ cache:
 before_install:
   - gem update --system
   - gem install bundler
+  - bundle install
+  - gem install webpacker
+  - bundle exec rails webpacker:binstubs
 
 rvm:
   - 2.5.0
@@ -21,4 +24,3 @@ env:
   # should be compatible across patch versions (only bug fixes are released in patch versions).
   matrix:
     - "RAILS_VERSION=5.1.4"
-
