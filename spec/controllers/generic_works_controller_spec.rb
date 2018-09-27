@@ -36,7 +36,6 @@ describe Hyrax::GenericWorksController, type: :controller do
       allow(presenter).to receive(:representative_id).and_return('123')
       allow(presenter).to receive(:universal_viewer?).and_return(true)
       allow(presenter).to receive(:representative_presenter).and_return(file_set_presenter)
-      allow(presenter).to receive(:iiif_version).and_return(3)
       allow(presenter).to receive(:grouped_presenters).and_return({})
       allow(presenter).to receive(:list_of_item_ids_to_display).and_return([])
       allow(presenter).to receive(:member_presenters_for).and_return([])
@@ -54,6 +53,7 @@ describe Hyrax::GenericWorksController, type: :controller do
 
     context 'with avalon viewer', skip: true do
       before do
+        allow(presenter).to receive(:iiif_version).and_return(3)
         allow(presenter).to receive(:iiif_viewer).and_return(iiif_viewer)
       end
       let(:iiif_viewer) { :avalon }
@@ -66,6 +66,7 @@ describe Hyrax::GenericWorksController, type: :controller do
 
     context 'with universal viewer' do
       before do
+        allow(presenter).to receive(:iiif_version).and_return(3)
         allow(presenter).to receive(:iiif_viewer).and_return(iiif_viewer)
       end
       let(:iiif_viewer) { :universal_viewer }
