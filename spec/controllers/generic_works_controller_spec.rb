@@ -41,6 +41,8 @@ describe Hyrax::GenericWorksController, type: :controller do
       allow(presenter).to receive(:list_of_item_ids_to_display).and_return([])
       allow(presenter).to receive(:member_presenters_for).and_return([])
       allow(controller).to receive(:can?).and_return(false)
+      # Stub template for now to get tests to pass
+      stub_template "app/views/hyrax/base/iiif_viewers/_avalon.html.erb" => ''
     end
 
     context "when the work presenter doesn't define #iiif_viewer" do

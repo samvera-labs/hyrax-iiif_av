@@ -29,8 +29,6 @@ class TestAppGenerator < Rails::Generators::Base
 
   def install_avalon_player
     generate 'hyrax:iiif_av:install_avalon_player'
-    # Attempt to fix https://github.com/rails/webpacker/issues/998
-    rake 'webpacker:binstubs'
   end
 
   def inject_work_type_mixins
