@@ -36,6 +36,7 @@ describe Hyrax::GenericWorksController, type: :controller do
       allow(presenter).to receive(:representative_id).and_return('123')
       allow(presenter).to receive(:universal_viewer?).and_return(true)
       allow(presenter).to receive(:representative_presenter).and_return(file_set_presenter)
+      allow(file_set_presenter).to receive(:video?).and_return(true)
       allow(presenter).to receive(:grouped_presenters).and_return({})
       allow(presenter).to receive(:list_of_item_ids_to_display).and_return([])
       allow(presenter).to receive(:member_presenters_for).and_return([])
