@@ -79,7 +79,13 @@ module Hyrax
           if solr_document['derivatives_metadata_ssi'].present?
             files_metadata = JSON.parse(solr_document['derivatives_metadata_ssi'])
             external_files = files_metadata.select { |f| f['external_file_uri'].present? }
-            return external_files.map { |f| video_display_content(f['external_file_uri'], f['label']) } unless external_files.empty?
+            unless external_files.empty?
+              return external_files.map do |f|
+                uri = URI(f['external_file_uri'])
+                uri = URI.join(request.base_url, uri) if uri.relative?
+                video_display_content(uri, f['label'])
+              end
+            end
           end
           [video_display_content(download_path('mp4'), 'mp4'), video_display_content(download_path('webm'), 'webm')]
         end
