@@ -1,3 +1,2 @@
 gem 'hyrax', github: 'samvera/hyrax'
 gem 'rails-controller-testing'
-gem 'iiif_manifest', github: 'samvera-labs/iiif_manifest'
