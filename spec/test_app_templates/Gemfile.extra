@@ -1,2 +1,2 @@
-gem 'hyrax'
+gem 'hyrax', github: 'samvera/hyrax'
 gem 'rails-controller-testing'
