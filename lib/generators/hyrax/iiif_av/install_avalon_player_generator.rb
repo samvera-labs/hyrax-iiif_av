@@ -10,7 +10,9 @@ module Hyrax
         gem 'webpacker'
         gem 'react-rails'
 
-        run "bundle install"
+        Bundler.with_clean_env do
+          run "BUNDLE_PATH=#{ENV['BUNDLE_PATH']} HOME=#{ENV['HOME']} bundle install"
+        end
       end
 
       def webpacker_install
