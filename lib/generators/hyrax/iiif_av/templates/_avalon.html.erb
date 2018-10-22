@@ -20,4 +20,4 @@ limitations under the License.
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application' %>
 <% end %>
-<%= react_component("AvalonIiifPlayer", { manifestUrl: main_app.polymorphic_path([main_app, :manifest, presenter], { locale: nil }) }) %>
+<%= react_component("AvalonIiifPlayer", { manifestUrl: main_app.polymorphic_url([main_app, :manifest, presenter], { locale: nil }) }) %>
