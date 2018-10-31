@@ -123,7 +123,7 @@ RSpec.shared_examples "IiifAv::DisplaysIiifAv" do
     context 'with no representative_presenter' do
       let(:representative_presenter) { instance_double('Hyrax::FileSetPresenter', present?: false) }
 
-      it { is_expected.to be nil }
+      it { is_expected.to be :universal_viewer }
     end
   end
 end
