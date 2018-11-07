@@ -80,6 +80,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
       end
 
       context 'when the file is an audio derivative with metadata' do
+        let(:file_set_id) { 'abcdefg' }
         let(:derivatives_metadata) do
           [
             { id: '1', label: 'high', file_location_uri: Hyrax::DerivativePath.derivative_path_for_reference(file_set_id, 'medium.mp3') },
@@ -96,8 +97,8 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
           expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
           expect(content.length).to eq 2
           expect(content.map(&:label)).to match_array(['high', 'medium'])
-          expect(content.map(&:url)).to match_array([Hyrax::Engine.routes.url_helpers.download_path(file_set, file: 'high.mp3'),
-                                                     Hyrax::Engine.routes.url_helpers.download_path(file_set, file: 'medium.mp3')])
+          expect(content.map(&:url)).to match_array([Hyrax::Engine.routes.url_helpers.download_path(file_set_id, file: 'high.mp3'),
+                                                     Hyrax::Engine.routes.url_helpers.download_path(file_set_id, file: 'medium.mp3')])
         end
 
         context 'with custom av url builder' do
