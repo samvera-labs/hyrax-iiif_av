@@ -24,7 +24,6 @@ module Hyrax
 
       included do
         prepend_view_path(Hyrax::IiifAv::Engine.view_path)
-        helper Hyrax::IiifAv::IiifAvHelper
       end
 
       IIIF_PRESENTATION_2_MIME = 'application/json;profile=http://iiif.io/api/presentation/2/context.json'

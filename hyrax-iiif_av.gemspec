@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~>5.1"
   s.add_dependency "blacklight"
-  s.add_dependency "hyrax", "~> 2.1"
+  s.add_dependency "hyrax", "~> 2.4"
   s.add_dependency "iiif_manifest", "~> 0.5"
 
   s.add_development_dependency 'bixby'
@@ -30,4 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'factory_bot_rails'
   s.add_development_dependency 'rails-controller-testing'
   s.add_development_dependency 'rspec-rails', '~> 3.8'
+
+  # Pin sass to avoid bug
+  s.add_development_dependency 'sass', '=3.6.0'
 end
