@@ -81,9 +81,11 @@ module Hyrax
             external_files = files_metadata.select { |f| f['external_file_uri'].present? }
             unless external_files.empty?
               return external_files.map do |f|
-                uri = URI(f['external_file_uri'])
-                uri = URI.join(request.base_url, uri) if uri.relative?
-                video_display_content(uri, f['label'])
+                url = Hyrax.config.iiif_av_url_builder.call(
+                  f['file_location_uri'],
+                  request.base_url
+                )
+                video_display_content(url, f['label'])
               end
             end
           end
@@ -103,7 +105,15 @@ module Hyrax
           if solr_document['derivatives_metadata_ssi'].present?
             files_metadata = JSON.parse(solr_document['derivatives_metadata_ssi'])
             external_files = files_metadata.select { |f| f['external_file_uri'].present? }
-            return external_files.map { |f| audio_display_content(f['external_file_uri'], f['label']) } unless external_files.empty?
+            unless external_files.empty?
+              return external_files.map do |f|
+                url = Hyrax::IiifAv.config.iiif_av_url_builder.call(
+                  f['file_location_uri'],
+                  request.base_url
+                )
+                audio_display_content(url, f['label'])
+              end
+            end
           end
           [audio_display_content(download_path('ogg'), 'ogg'), audio_display_content(download_path('mp3'), 'mp3')]
         end
