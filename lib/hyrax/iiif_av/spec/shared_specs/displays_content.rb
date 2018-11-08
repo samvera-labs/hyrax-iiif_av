@@ -117,8 +117,8 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
             expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
             expect(content.length).to eq 2
             expect(content.map(&:label)).to match_array(['high', 'medium'])
-            expect(content.map(&:url)).to match_array(['http://streaming.example.com/stream/high.mp3',
-                                                       'http://streaming.example.com/stream/medium.mp3'])
+            expect(content.map(&:url)).to match_array(['http://streaming.example.com/stream/g-high.mp3.high.mp3',
+                                                       'http://streaming.example.com/stream/g-medium.mp3.medium.mp3'])
           end
         end
       end

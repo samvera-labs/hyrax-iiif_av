@@ -78,7 +78,7 @@ module Hyrax
           # @see https://github.com/samvera-labs/iiif_manifest
           if solr_document['derivatives_metadata_ssi'].present?
             files_metadata = JSON.parse(solr_document['derivatives_metadata_ssi'])
-            external_files = files_metadata.select { |f| f['external_file_uri'].present? }
+            external_files = files_metadata.select { |f| f['file_location_uri'].present? }
             unless external_files.empty?
               return external_files.map do |f|
                 url = Hyrax.config.iiif_av_url_builder.call(
@@ -104,7 +104,7 @@ module Hyrax
         def audio_content
           if solr_document['derivatives_metadata_ssi'].present?
             files_metadata = JSON.parse(solr_document['derivatives_metadata_ssi'])
-            external_files = files_metadata.select { |f| f['external_file_uri'].present? }
+            external_files = files_metadata.select { |f| f['file_location_uri'].present? }
             unless external_files.empty?
               return external_files.map do |f|
                 url = Hyrax::IiifAv.config.iiif_av_url_builder.call(
