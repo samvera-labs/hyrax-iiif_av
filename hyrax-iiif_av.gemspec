@@ -33,4 +33,6 @@ Gem::Specification.new do |s|
 
   # Pin sass to avoid bug
   s.add_development_dependency 'sass', '=3.6.0'
+  # Pin hiredis
+  s.add_development_dependency 'hiredis', '=0.6.1'
 end
