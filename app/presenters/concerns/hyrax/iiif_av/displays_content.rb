@@ -78,7 +78,7 @@ module Hyrax
           # @see https://github.com/samvera-labs/iiif_manifest
           streams = stream_urls
           if streams.present?
-            streams.collect { |label, url| audio_display_content(url, label) }
+            streams.collect { |label, url| video_display_content(url, label) }
           else
             [video_display_content(download_path('mp4'), 'mp4'), video_display_content(download_path('webm'), 'webm')]
           end
