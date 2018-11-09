@@ -38,8 +38,8 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
-FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::Engine.root)]
-FactoryBot.find_definitions
+# FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::Engine.root)]
+# FactoryBot.find_definitions
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

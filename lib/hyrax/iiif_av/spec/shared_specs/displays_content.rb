@@ -80,10 +80,11 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
       end
 
       context 'when the file is an audio derivative with metadata' do
+        let(:file_set_id) { 'abcdefg' }
         let(:derivatives_metadata) do
           [
-            { id: '1', label: 'high', external_file_uri: 'http://test.com/high.mp3' },
-            { id: '2', label: 'medium', external_file_uri: 'http://test.com/medium.mp3' }
+            { id: '1', label: 'high', file_location_uri: Hyrax::DerivativePath.derivative_path_for_reference(file_set_id, 'medium.mp3') },
+            { id: '2', label: 'medium', file_location_uri: Hyrax::DerivativePath.derivative_path_for_reference(file_set_id, 'high.mp3') }
           ]
         end
         let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000, derivatives_metadata_ssi: derivatives_metadata.to_json) }
@@ -96,7 +97,29 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
           expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
           expect(content.length).to eq 2
           expect(content.map(&:label)).to match_array(['high', 'medium'])
-          expect(content.map(&:url)).to match_array(['http://test.com/high.mp3', 'http://test.com/medium.mp3'])
+          expect(content.map(&:url)).to match_array([Hyrax::Engine.routes.url_helpers.download_path(file_set_id, file: 'high.mp3'),
+                                                     Hyrax::Engine.routes.url_helpers.download_path(file_set_id, file: 'medium.mp3')])
+        end
+
+        context 'with custom av url builder' do
+          let(:custom_builder) do
+            ->(file_location_uri, _base_url) { "http://streaming.example.com/stream/#{File.basename(file_location_uri)}" }
+          end
+
+          around do |example|
+            default_builder = Hyrax::IiifAv.config.iiif_av_url_builder
+            Hyrax::IiifAv.config.iiif_av_url_builder = custom_builder
+            example.run
+            Hyrax::IiifAv.config.iiif_av_url_builder = default_builder
+          end
+
+          it 'creates an array of content objects with metadata' do
+            expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
+            expect(content.length).to eq 2
+            expect(content.map(&:label)).to match_array(['high', 'medium'])
+            expect(content.map(&:url)).to match_array(['http://streaming.example.com/stream/g-high.mp3.high.mp3',
+                                                       'http://streaming.example.com/stream/g-medium.mp3.medium.mp3'])
+          end
         end
       end
 
