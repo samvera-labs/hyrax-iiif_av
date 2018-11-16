@@ -93,6 +93,13 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
           allow(solr_document).to receive(:audio?).and_return(true)
         end
 
+        around do |example|
+          current_builder = Hyrax::IiifAv.config.iiif_av_url_builder
+          Hyrax::IiifAv.config.iiif_av_url_builder = Hyrax::IiifAv::Configuration.new.iiif_av_url_builder
+          example.run
+          Hyrax::IiifAv.config.iiif_av_url_builder = current_builder
+        end
+
         it 'creates an array of content objects with metadata' do
           expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
           expect(content.length).to eq 2
@@ -107,10 +114,10 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
           end
 
           around do |example|
-            default_builder = Hyrax::IiifAv.config.iiif_av_url_builder
+            current_builder = Hyrax::IiifAv.config.iiif_av_url_builder
             Hyrax::IiifAv.config.iiif_av_url_builder = custom_builder
             example.run
-            Hyrax::IiifAv.config.iiif_av_url_builder = default_builder
+            Hyrax::IiifAv.config.iiif_av_url_builder = current_builder
           end
 
           it 'creates an array of content objects with metadata' do
