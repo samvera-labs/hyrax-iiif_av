@@ -26,8 +26,8 @@ module Hyrax
         prepend_view_path(Hyrax::IiifAv::Engine.view_path)
       end
 
-      IIIF_PRESENTATION_2_MIME = 'application/json;profile=http://iiif.io/api/presentation/2/context.json'
-      IIIF_PRESENTATION_3_MIME = 'application/json;profile=http://iiif.io/api/presentation/3/context.json'
+      IIIF_PRESENTATION_2_MIME = 'application/ld+json;profile="http://iiif.io/api/presentation/2/context.json"'
+      IIIF_PRESENTATION_3_MIME = 'application/ld+json;profile="http://iiif.io/api/presentation/3/context.json"'
 
       def manifest
         add_iiif_header
