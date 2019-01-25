@@ -1,43 +1,21 @@
 # hyrax-iiif_av
 Hyrax plugin for IIIF Presentation 3.0 Audiovisual support
 
-# Steps to use this plugin
-1. Include controller mixin in your model controller:
-```ruby
-# Generated via
-#  `rails generate hyrax:work GenericWork`
-module Hyrax
-  # Generated controller for GenericWork
-  class GenericWorksController < ApplicationController
-    # Adds Hyrax behaviors to the controller.
-    include Hyrax::WorksControllerBehavior
-    include Hyrax::BreadcrumbsForWorks
-    include Hyrax::IiifAv::ControllerBehavior
-    self.curation_concern_type = ::GenericWork
+# How to use this plugin
+1. Add `hyrax-iiif_av` to your `Gemfile` and `bundle install`
 
-    # Use this line if you want to use a custom presenter
-    self.show_presenter = Hyrax::GenericWorkPresenter
-  end
-end
+2. Run generator passing your work type:
 ```
-
-2. Setup work presenter:
-```ruby
-# Generated via
-#  `rails generate hyrax:work GenericWork`
-module Hyrax
-  class GenericWorkPresenter < Hyrax::WorkShowPresenter
-    include Hyrax::IiifAv::DisplaysIiifAv
-
-    Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
-
-    # Optional override to select iiif viewer to render
-    # default :avalon for AV, :universal_viewer for images
-    def iiif_viewer
-      :universal_viewer
-    end
-  end
-end
+rails g hyrax:iiif_av:add_to_work_type MyWorkType
 ```
+Notice that this generator includes mixins in the work controller and work show presenter.
 
-3. Ingest audiovisual content and see the Avalon IIIF viewer render on the work show page.
+3. (Optional) Run avalon player generator:
+```
+rails g hyrax:iiif_av:install_avalon_player
+```
+This will install `webpacker`, `react-rails`, and the avalon player (view partial, react JS, and yarn dependency).  This might take a while.
+
+4. Ingest audiovisual content and see a IIIF viewer render on the work show page.
+
+For a walkthrough of this in a demo application try running through this repository's README: https://github.com/avalonmediasystem/connect2018-workshop
