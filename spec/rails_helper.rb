@@ -11,8 +11,10 @@ EngineCart.load_application!
 # abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'hyrax'
 require 'devise'
 require 'factory_bot'
+require File.expand_path('spec/support/features/session_helpers', Hyrax::Engine.root)
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -38,8 +40,8 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
-# FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::Engine.root)]
-# FactoryBot.find_definitions
+FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::Engine.root)]
+FactoryBot.find_definitions
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
