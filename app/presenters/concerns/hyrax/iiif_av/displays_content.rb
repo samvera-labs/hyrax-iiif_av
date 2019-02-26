@@ -90,7 +90,8 @@ module Hyrax
                                                width: Array(solr_document.width).first.try(:to_i),
                                                height: Array(solr_document.height).first.try(:to_i),
                                                duration: Array(solr_document.duration).first.try(:to_i) / 1000.0,
-                                               type: 'Video')
+                                               type: 'Video',
+                                               auth_service: auth_service)
         end
 
         def audio_content
@@ -106,7 +107,8 @@ module Hyrax
           IIIFManifest::V3::DisplayContent.new(url,
                                                label: label,
                                                duration: Array(solr_document.duration).first.try(:to_i) / 1000.0,
-                                               type: 'Sound')
+                                               type: 'Sound',
+                                               auth_service: auth_service)
         end
 
         def download_path(extension)
@@ -127,6 +129,34 @@ module Hyrax
             end
           end
           streams
+        end
+
+        def auth_service
+          {
+            "context": "http://iiif.io/api/auth/1/context.json",
+            "@id": Rails.application.routes.url_helpers.new_user_session_url(host: request.base_url),
+            "@type": "AuthCookieService1",
+            "confirmLabel": I18n.t('iiif_av.auth.confirmLabel'),
+            "description": I18n.t('iiif_av.auth.description'),
+            "failureDescription": I18n.t('iiif_av.auth.failureDescription'),
+            "failureHeader": I18n.t('iiif_av.auth.failureHeader'),
+            "header": I18n.t('iiif_av.auth.header'),
+            "label": I18n.t('iiif_av.auth.label'),
+            "profile": "http://iiif.io/api/auth/1/login",
+            "service": [
+              {
+                "@id": Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_auth_token_url(id: id, host: request.base_url),
+                "@type": "AuthTokenService1",
+                "profile": "http://iiif.io/api/auth/1/token"
+              },
+              {
+                "@id": Rails.application.routes.url_helpers.destroy_user_session_url(host: request.base_url),
+                "@type": "AuthLogoutService1",
+                "label": I18n.t('iiif_av.auth.logoutLabel'),
+                "profile": "http://iiif.io/api/auth/1/logout"
+              }
+            ]
+          }
         end
     end
   end

@@ -1,0 +1,10 @@
+en:
+  iiif_av:
+    auth:
+      confirmLabel: "Login"
+      description: "You must log in to view this content."
+      failureDescription: "<a href=\"http://example.org/policy\">Access Policy</a>"
+      failureHeader: "Authentication Failed"
+      header: "Please Log In"
+      label: "Login Required"
+      logoutLabel: "Log out"

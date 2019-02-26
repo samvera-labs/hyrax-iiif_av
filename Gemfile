@@ -12,6 +12,8 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
+gem 'iiif_manifest', git: 'https://github.com/samvera-labs/iiif_manifest.git'
+
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 # BEGIN ENGINE_CART BLOCK

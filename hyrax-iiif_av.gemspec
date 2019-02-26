@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bixby'
   s.add_development_dependency 'coffee-rails'
   s.add_development_dependency 'engine_cart', '~> 2.2'
-  s.add_development_dependency 'factory_bot_rails'
+  s.add_development_dependency 'factory_bot'
   s.add_development_dependency 'rails-controller-testing'
   s.add_development_dependency 'rspec-rails', '~> 3.8'
 end

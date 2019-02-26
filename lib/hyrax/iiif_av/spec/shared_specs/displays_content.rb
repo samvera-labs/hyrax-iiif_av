@@ -83,8 +83,8 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
         let(:file_set_id) { 'abcdefg' }
         let(:derivatives_metadata) do
           [
-            { id: '1', label: 'high', file_location_uri: Hyrax::DerivativePath.derivative_path_for_reference(file_set_id, 'medium.mp3') },
-            { id: '2', label: 'medium', file_location_uri: Hyrax::DerivativePath.derivative_path_for_reference(file_set_id, 'high.mp3') }
+            { id: '1', label: 'high', file_location_uri: Hyrax::DerivativePath.derivative_path_for_reference(file_set_id, 'high.mp3') },
+            { id: '2', label: 'medium', file_location_uri: Hyrax::DerivativePath.derivative_path_for_reference(file_set_id, 'medium.mp3') }
           ]
         end
         let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000, derivatives_metadata_ssi: derivatives_metadata.to_json) }
@@ -189,6 +189,29 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
             expect(content).to be_instance_of IIIFManifest::V3::DisplayContent
             expect(content.url).to eq "http://test.host/#{id}/full/600,/0/default.jpg"
           end
+        end
+      end
+
+      context 'auth_service' do
+        let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000) }
+        let(:auth_service) { content.first.auth_service }
+
+        before do
+          allow(solr_document).to receive(:audio?).and_return(true)
+        end
+
+        it 'provides a cookie auth service' do
+          expect(auth_service[:@id]).to eq Rails.application.routes.url_helpers.new_user_session_url(host: request.base_url)
+        end
+
+        it 'provides a token service' do
+          token_service = auth_service[:service].find { |s| s[:@type] == "AuthTokenService1" }
+          expect(token_service[:@id]).to eq Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_auth_token_url(id: solr_document.id, host: request.base_url)
+        end
+
+        it 'provides a logout service' do
+          logout_service = auth_service[:service].find { |s| s[:@type] == "AuthLogoutService1" }
+          expect(logout_service[:@id]).to eq Rails.application.routes.url_helpers.destroy_user_session_url(host: request.base_url)
         end
       end
     end
