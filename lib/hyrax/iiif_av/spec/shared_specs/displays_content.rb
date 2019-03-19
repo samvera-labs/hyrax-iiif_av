@@ -41,8 +41,8 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
 
       context "when the file is a sound recording" do
         let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000) }
-        let(:mp3_url) { "http://test.host/downloads/#{solr_document.id}?file=mp3" }
-        let(:ogg_url) { "http://test.host/downloads/#{solr_document.id}?file=ogg" }
+        let(:mp3_url) { "http://test.host/iiif_av/content/#{solr_document.id}/mp3" }
+        let(:ogg_url) { "http://test.host/iiif_av/content/#{solr_document.id}/ogg" }
 
         before do
           allow(solr_document).to receive(:audio?).and_return(true)
@@ -60,8 +60,8 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
 
       context "when the file is a video" do
         let(:solr_document) { SolrDocument.new(id: '12345', width_is: 640, height_is: 480, duration_tesim: 1000) }
-        let(:mp4_url) { "http://test.host/downloads/#{id}?file=mp4" }
-        let(:webm_url) { "http://test.host/downloads/#{id}?file=webm" }
+        let(:mp4_url) { "http://test.host/iiif_av/content/#{id}/mp4" }
+        let(:webm_url) { "http://test.host/iiif_av/content/#{id}/webm" }
 
         before do
           allow(solr_document).to receive(:video?).and_return(true)
@@ -87,46 +87,18 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
             { id: '2', label: 'medium', file_location_uri: Hyrax::DerivativePath.derivative_path_for_reference(file_set_id, 'medium.mp3') }
           ]
         end
-        let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000, derivatives_metadata_ssi: derivatives_metadata.to_json) }
+        let(:solr_document) { SolrDocument.new(id: file_set_id, duration_tesim: 1000, derivatives_metadata_ssi: derivatives_metadata.to_json) }
 
         before do
           allow(solr_document).to receive(:audio?).and_return(true)
-        end
-
-        around do |example|
-          current_builder = Hyrax::IiifAv.config.iiif_av_url_builder
-          Hyrax::IiifAv.config.iiif_av_url_builder = Hyrax::IiifAv::Configuration.new.iiif_av_url_builder
-          example.run
-          Hyrax::IiifAv.config.iiif_av_url_builder = current_builder
         end
 
         it 'creates an array of content objects with metadata' do
           expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
           expect(content.length).to eq 2
           expect(content.map(&:label)).to match_array(['high', 'medium'])
-          expect(content.map(&:url)).to match_array([Hyrax::Engine.routes.url_helpers.download_path(file_set_id, file: 'high.mp3'),
-                                                     Hyrax::Engine.routes.url_helpers.download_path(file_set_id, file: 'medium.mp3')])
-        end
-
-        context 'with custom av url builder' do
-          let(:custom_builder) do
-            ->(file_location_uri, _base_url) { "http://streaming.example.com/stream/#{File.basename(file_location_uri)}" }
-          end
-
-          around do |example|
-            current_builder = Hyrax::IiifAv.config.iiif_av_url_builder
-            Hyrax::IiifAv.config.iiif_av_url_builder = custom_builder
-            example.run
-            Hyrax::IiifAv.config.iiif_av_url_builder = current_builder
-          end
-
-          it 'creates an array of content objects with metadata' do
-            expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
-            expect(content.length).to eq 2
-            expect(content.map(&:label)).to match_array(['high', 'medium'])
-            expect(content.map(&:url)).to match_array(['http://streaming.example.com/stream/g-high.mp3.high.mp3',
-                                                       'http://streaming.example.com/stream/g-medium.mp3.medium.mp3'])
-          end
+          expect(content.map(&:url)).to match_array([Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(file_set_id, label: 'high', host: request.base_url),
+                                                     Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(file_set_id, label: 'medium', host: request.base_url)])
         end
       end
 

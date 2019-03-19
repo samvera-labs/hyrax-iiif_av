@@ -84,8 +84,8 @@ module Hyrax
           end
         end
 
-        def video_display_content(url, label = '')
-          IIIFManifest::V3::DisplayContent.new(url,
+        def video_display_content(_url, label = '')
+          IIIFManifest::V3::DisplayContent.new(Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(solr_document.id, label: label, host: request.base_url),
                                                label: label,
                                                width: Array(solr_document.width).first.try(:to_i),
                                                height: Array(solr_document.height).first.try(:to_i),
@@ -103,8 +103,8 @@ module Hyrax
           end
         end
 
-        def audio_display_content(url, label = '')
-          IIIFManifest::V3::DisplayContent.new(url,
+        def audio_display_content(_url, label = '')
+          IIIFManifest::V3::DisplayContent.new(Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(solr_document.id, label: label, host: request.base_url),
                                                label: label,
                                                duration: Array(solr_document.duration).first.try(:to_i) / 1000.0,
                                                type: 'Sound',
