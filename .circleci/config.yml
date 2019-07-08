@@ -27,7 +27,9 @@ jobs:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
           project: hyrax-iiif_av
-    
+
+      - samvera/rubocop
+
       - samvera/engine_cart_generate:
           cache_key: v1-internal-test-app-{{ checksum "hyrax-iiif_av.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "lib/generators/hyrax/iiif_av/install_generator.rb" }}
 
