@@ -13,7 +13,7 @@ gemspec
 # your gem to rubygems.org.
 
 gem 'iiif_manifest', git: 'https://github.com/samvera-labs/iiif_manifest.git'
-gem 'hyrax', github: 'samvera/hyrax'
+gem 'hyrax', github: 'samvera/hyrax', branch: 'cjcolvar-patch-2'
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
