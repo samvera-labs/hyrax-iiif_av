@@ -134,7 +134,7 @@ module Hyrax
         def auth_service
           {
             "context": "http://iiif.io/api/auth/1/context.json",
-            "@id": Rails.application.routes.url_helpers.new_user_session_url(host: request.base_url),
+            "@id": Rails.application.routes.url_helpers.new_user_session_url(host: request.base_url, iiif_auth_login: true),
             "@type": "AuthCookieService1",
             "confirmLabel": I18n.t('iiif_av.auth.confirmLabel'),
             "description": I18n.t('iiif_av.auth.description'),

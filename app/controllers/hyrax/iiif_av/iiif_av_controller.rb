@@ -9,7 +9,7 @@ module Hyrax
         file_set_id = params[:id]
         label = params[:label]
         if request.head?
-          return head :ok if valid_token?
+          return head :ok if valid_token? || can?(:read, params[:id])
           return head :unauthorized
         else
           return head :unauthorized unless presenter
@@ -20,27 +20,40 @@ module Hyrax
 
       def auth_token
         return head :unauthorized unless can? :read, params[:id]
+        response.set_header('Content-Security-Policy', 'frame-ancestors *')
         render html: auth_token_html_response(generate_auth_token)
+      end
+
+      # This route is meant to be used with devise's `after_sign_in_path_for` as part of the IIIF Auth flow
+      # See the override of `after_sign_in_path_for` in Hyrax::IiifAv::AuthControllerBehavior
+      def sign_in
+        render inline: "<html><head><script>window.close();</script></head><body></body></html>".html_safe
       end
 
       private
 
         def generate_auth_token
-          session["iiif_auth_tokens"] ||= {}
           # This is the same method used by ActiveRecord::SecureToken
-          session["iiif_auth_tokens"][params[:id]] = SecureRandom.base58(24)
+          token = SecureRandom.base58(24)
+          Rails.cache.write("iiif_auth_token-#{token}", params[:id])
+          token
         end
 
-        # rubocop:disable Rails/OutputSafety
         def auth_token_html_response(token)
           message = { messageId: params[:messageId], accessToken: token }
           origin = Rails::Html::FullSanitizer.new.sanitize(params[:origin])
           "<html><body><script>window.parent.postMessage(#{message.to_json}, \"#{origin}\");</script></body></html>".html_safe
-        end # rubocop:enable Rails/OutputSafety
+        end
 
         def valid_token?
-          auth_token = request.headers['Authorization']&.sub('Bearer ', '')
-          session["iiif_auth_tokens"] && session["iiif_auth_tokens"][params[:id]] == auth_token
+          auth_token = request.headers['Authorization']&.sub('Bearer ', '')&.strip
+          resource_id = Rails.cache.read("iiif_auth_token-#{auth_token}")
+          params[:id] == resource_id
+        end
+
+        # Override of Blacklight::RequestBuilders
+        def search_builder_class
+          Hyrax::FileSetSearchBuilder
         end
 
         def presenter
