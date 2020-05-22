@@ -2,7 +2,7 @@ inherit_gem:
   bixby: bixby_default.yml
 
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
   DisplayCopNames: true
 
 Naming/FileName:
@@ -22,6 +22,7 @@ Metrics/BlockLength:
     - 'spec/controllers/generic_works_controller_spec.rb'
     - 'spec/controllers/iiif_av_controller_spec.rb'
     - 'spec/helpers/iiif_av_helper_spec.rb'
+    - 'spec/requests/auth_controller_behavior_spec.rb'
 
 RSpec/VerifiedDoubles:
   Exclude:
@@ -40,3 +41,7 @@ Metrics/ModuleLength:
 Metrics/MethodLength:
   Exclude:
     - 'app/presenters/concerns/hyrax/iiif_av/displays_content.rb'
+
+Rails/OutputSafety:
+  Exclude:
+    - 'app/controllers/hyrax/iiif_av/iiif_av_controller.rb'

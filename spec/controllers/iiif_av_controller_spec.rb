@@ -18,6 +18,7 @@ describe Hyrax::IiifAv::IiifAvController, type: :controller do
   describe '#content' do
     context 'with head request' do
       it 'returns unauthorized (401) with invalid auth token' do
+        allow(controller).to receive(:can?).and_return(false)
         request.headers['Authorization'] = "Bearer bad-token"
         expect(head(:content, params: { id: file_set_id, label: 'mp4' })).to have_http_status(:unauthorized)
       end
@@ -30,7 +31,15 @@ describe Hyrax::IiifAv::IiifAvController, type: :controller do
         end
 
         it 'returns ok (200)' do
+          allow(controller).to receive(:can?).and_return(false)
           request.headers['Authorization'] = "Bearer #{token}"
+          expect(head(:content, params: { id: file_set_id, label: 'mp4' })).to have_http_status(:ok)
+        end
+      end
+
+      context 'with public content' do
+        it 'returns ok (200)' do
+          allow(controller).to receive(:can?).and_return(true)
           expect(head(:content, params: { id: file_set_id, label: 'mp4' })).to have_http_status(:ok)
         end
       end
@@ -104,6 +113,15 @@ describe Hyrax::IiifAv::IiifAvController, type: :controller do
       get(:auth_token, params: { id: file_set_id, messageId: 1, origin: "https://example.com" })
       expect(response).to have_http_status(:ok)
       expect(response.body.gsub(/\s+/, '')).to match(/window.parent.postMessage\({"messageId":"1","accessToken":".+"},"https:\/\/example.com"\);/)
+    end
+  end
+
+  describe '#sign_in' do
+    it 'returns a page that closes' do
+      sign_in FactoryBot.create(:user)
+      get(:sign_in)
+      expect(response).to have_http_status(:ok)
+      expect(response.body.gsub(/\s+/, '')).to match(/\<script\>window.close\(\)\;\<\/script\>/)
     end
   end
 end

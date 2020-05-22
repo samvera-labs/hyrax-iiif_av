@@ -173,7 +173,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
         end
 
         it 'provides a cookie auth service' do
-          expect(auth_service[:@id]).to eq Rails.application.routes.url_helpers.new_user_session_url(host: request.base_url)
+          expect(auth_service[:@id]).to eq Rails.application.routes.url_helpers.new_user_session_url(host: request.base_url, iiif_auth_login: true)
         end
 
         it 'provides a token service' do
