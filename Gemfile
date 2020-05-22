@@ -12,8 +12,7 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-gem 'hyrax', github: 'samvera/hyrax', branch: 'cjcolvar-patch-2'
-gem 'iiif_manifest', git: 'https://github.com/samvera-labs/iiif_manifest.git'
+gem 'hyrax', github: 'samvera/hyrax'
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]

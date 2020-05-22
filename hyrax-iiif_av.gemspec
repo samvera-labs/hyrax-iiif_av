@@ -19,15 +19,15 @@ Gem::Specification.new do |s|
     f.match(%r{^(test|spec|features)/})
   end
 
-  s.add_dependency "rails", "~>5.1"
+  s.add_dependency "rails", "~>5.2"
   s.add_dependency "blacklight"
   s.add_dependency "hyrax", ">= 3.0.0.pre.beta2", "< 4.0"
-  s.add_dependency "iiif_manifest", "~> 0.6"
+  s.add_dependency "iiif_manifest", "~> 1.0", ">= 1.0.1"
 
   s.add_development_dependency 'bixby'
   s.add_development_dependency 'coffee-rails'
   s.add_development_dependency 'engine_cart', '~> 2.2'
-  s.add_development_dependency 'factory_bot'
+  # s.add_development_dependency 'factory_bot'
   s.add_development_dependency 'rails-controller-testing'
   s.add_development_dependency 'rspec-rails', '~> 3.8'
   s.add_development_dependency 'rspec_junit_formatter'
