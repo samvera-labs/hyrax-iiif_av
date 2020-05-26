@@ -14,7 +14,6 @@ require 'rspec/rails'
 require 'hyrax'
 require 'devise'
 require 'factory_bot'
-require File.expand_path('spec/support/features/session_helpers', Hyrax::Engine.root)
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -29,7 +28,7 @@ require File.expand_path('spec/support/features/session_helpers', Hyrax::Engine.
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -40,7 +39,7 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
-FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::Engine.root)]
+FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::IiifAv::Engine.root)]
 FactoryBot.find_definitions
 
 RSpec.configure do |config|
