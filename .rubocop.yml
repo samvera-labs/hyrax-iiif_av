@@ -21,8 +21,10 @@ Metrics/BlockLength:
     - 'lib/hyrax/iiif_av/spec/shared_specs/displays_iiif_av.rb'
     - 'spec/controllers/generic_works_controller_spec.rb'
     - 'spec/controllers/iiif_av_controller_spec.rb'
+    - 'spec/factories/users.rb'
     - 'spec/helpers/iiif_av_helper_spec.rb'
     - 'spec/requests/auth_controller_behavior_spec.rb'
+    - 'spec/support/features/session_helpers.rb'
 
 RSpec/VerifiedDoubles:
   Exclude:
