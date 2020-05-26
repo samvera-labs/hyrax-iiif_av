@@ -10,11 +10,13 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
   let(:parent_presenter) { double("Hyrax::GenericWorkPresenter", iiif_version: 2) }
   let(:first_title) { 'File Set Title' }
   let(:title) { [first_title] }
+  let(:versioned_file_id) { id }
 
   before do
     allow(ability).to receive(:can?).with(:read, solr_document.id).and_return(read_permission)
     allow(presenter).to receive(:parent).and_return(parent_presenter)
     allow(presenter).to receive(:title).and_return(title)
+    allow(presenter).to receive(:original_file_id).and_return(versioned_file_id)
   end
 
   describe '#display_content' do
@@ -130,7 +132,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
 
         context 'with custom image url builder' do
           let(:custom_builder) do
-            ->(file_id, base_url, _size) { "#{base_url}/downloads/#{file_id.split('/').first}" }
+            ->(file_id, base_url, _size, _format) { "#{base_url}/downloads/#{file_id.split('/').first}" }
           end
 
           around do |example|
