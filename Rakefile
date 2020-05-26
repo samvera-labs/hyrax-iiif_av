@@ -43,5 +43,16 @@ end
 
 RSpec::Core::RakeTask.new(:spec)
 
+task :spec_with_server do
+  require 'solr_wrapper'   # necessary for rake_support to work
+  require 'fcrepo_wrapper' # necessary for rake_support to work
+  require 'active_fedora/rake_support'
+
+  ENV['environment'] = "test"
+  with_test_server do
+    Rake::Task['spec'].invoke
+  end
+end
+
 desc "CI build"
-task ci: [:rubocop, "engine_cart:generate", :spec]
+task ci: [:rubocop, "engine_cart:generate", :spec_with_server]
