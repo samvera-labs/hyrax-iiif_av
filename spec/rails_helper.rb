@@ -13,7 +13,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'hyrax'
 require 'devise'
-# require 'factory_bot'
+require 'factory_bot'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -28,7 +28,7 @@ require 'devise'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -39,8 +39,8 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
-# FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::IiifAv::Engine.root)]
-# FactoryBot.find_definitions
+FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::IiifAv::Engine.root)]
+FactoryBot.find_definitions
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -73,5 +73,5 @@ RSpec.configure do |config|
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
-  # config.include FactoryBot::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 end
