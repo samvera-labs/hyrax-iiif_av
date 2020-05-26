@@ -24,6 +24,7 @@ module Hyrax
 
       included do
         prepend_view_path(Hyrax::IiifAv::Engine.view_path)
+        self.iiif_manifest_builder = (Flipflop.cache_work_iiif_manifest? ? Hyrax::CachingIiifManifestBuilder : Hyrax::ManifestBuilderService)
       end
 
       IIIF_PRESENTATION_2_MIME = 'application/ld+json;profile="http://iiif.io/api/presentation/2/context.json"'
@@ -31,7 +32,16 @@ module Hyrax
 
       def manifest
         add_iiif_header
-        super
+
+        # super
+        headers['Access-Control-Allow-Origin'] = '*'
+
+        json = iiif_manifest_builder.manifest_for(presenter: presenter, iiif_manifest_factory: manifest_factory)
+
+        respond_to do |wants|
+          wants.json { render json: json }
+          wants.html { render json: json }
+        end
       end
 
       private
@@ -50,11 +60,11 @@ module Hyrax
           headers['Content-Type'] = iiif_mime
         end
 
-        def manifest_builder
+        def manifest_factory
           if iiif_version_3?
-            ::IIIFManifest::V3::ManifestFactory.new(presenter)
+            ::IIIFManifest::V3::ManifestFactory
           else
-            ::IIIFManifest::ManifestFactory.new(presenter)
+            ::IIIFManifest::ManifestFactory
           end
         end
     end

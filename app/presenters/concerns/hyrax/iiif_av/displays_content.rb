@@ -47,10 +47,15 @@ module Hyrax
         end
 
         def image_content
+          latest_file_id = lookup_original_file_id
+
+          return nil unless latest_file_id
+
           url = Hyrax.config.iiif_image_url_builder.call(
-            solr_document.id,
+            latest_file_id,
             request.base_url,
-            Hyrax.config.iiif_image_size_default
+            Hyrax.config.iiif_image_size_default,
+            format: image_format(alpha_channels)
           )
 
           # Look at the request and target prezi 2 or 3 for images
@@ -60,8 +65,9 @@ module Hyrax
         def image_content_v3(url)
           # @see https://github.com/samvera-labs/iiif_manifest
           IIIFManifest::V3::DisplayContent.new(url,
-                                               width: 640,
-                                               height: 480,
+                                               format: image_format(alpha_channels),
+                                               width: width,
+                                               height: height,
                                                type: 'Image',
                                                iiif_endpoint: iiif_endpoint(solr_document.id))
         end
@@ -69,8 +75,9 @@ module Hyrax
         def image_content_v2(url)
           # @see https://github.com/samvera-labs/iiif_manifest
           IIIFManifest::DisplayImage.new(url,
-                                         width: 640,
-                                         height: 480,
+                                         format: image_format(alpha_channels),
+                                         width: width,
+                                         height: height,
                                          iiif_endpoint: iiif_endpoint(solr_document.id))
         end
 

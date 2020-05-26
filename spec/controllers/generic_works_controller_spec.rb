@@ -40,6 +40,7 @@ describe Hyrax::GenericWorksController, type: :controller do
       allow(presenter).to receive(:list_of_item_ids_to_display).and_return([])
       allow(presenter).to receive(:member_presenters_for).and_return([])
       allow(controller).to receive(:can?).and_return(false)
+      allow(ability).to receive(:can?).and_return(false)
     end
 
     context "when the work presenter doesn't define #iiif_viewer", skip: true do
