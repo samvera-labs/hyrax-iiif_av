@@ -18,12 +18,13 @@ module Hyrax
       attr_writer :iiif_av_url_builder
 
       # A symbol that represents the viewer to render for AV items.
-      # Defaults to :avalon. Known to work with :universalviewer as well
+      # Defaults to :avalon. Known to work with :universal_viewer as well
 
       # @return [:symbol] viewer partial name
       def iiif_av_viewer
         @iiif_av_viewer ||= :avalon
       end
+      attr_writer :iiif_av_viewer
     end
   end
 end
