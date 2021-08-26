@@ -38,7 +38,7 @@ module Hyrax
 
       def iiif_viewer
         if representative_presenter.video? || representative_presenter.audio?
-          :avalon
+          Hyrax.config.iiif_av_viewer
         else
           super
         end

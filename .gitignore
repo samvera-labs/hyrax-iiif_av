@@ -4,3 +4,4 @@ pkg/
 Gemfile.lock
 .internal_test_app
 .byebug_history
+vendor/bundle/**

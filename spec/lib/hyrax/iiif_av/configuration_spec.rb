@@ -7,4 +7,6 @@ describe Hyrax::IiifAv::Configuration do
 
   it { is_expected.to respond_to(:iiif_av_url_builder) }
   it { is_expected.to respond_to(:iiif_av_url_builder=) }
+  it { is_expected.to respond_to(:iiif_av_viewer) }
+  it { is_expected.to respond_to(:iiif_av_viewer=) }
 end
