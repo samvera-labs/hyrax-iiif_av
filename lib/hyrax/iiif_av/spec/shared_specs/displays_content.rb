@@ -52,6 +52,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
           expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
           expect(content.length).to eq 2
           expect(content.map(&:type)).to all(eq 'Sound')
+          expect(content.map(&:format)).to all(eq 'audio/mp3')
           expect(content.map(&:duration)).to all(eq 1.000)
           expect(content.map(&:label)).to match_array(['mp3', 'ogg'])
           expect(content.map(&:url)).to match_array([mp3_url, ogg_url])
@@ -71,6 +72,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
           expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
           expect(content.length).to eq 2
           expect(content.map(&:type)).to all(eq 'Video')
+          expect(content.map(&:type)).to all(eq 'video/mp4')
           expect(content.map(&:width)).to all(eq 640)
           expect(content.map(&:height)).to all(eq 480)
           expect(content.map(&:duration)).to all(eq 1.000)

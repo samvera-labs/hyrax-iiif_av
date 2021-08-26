@@ -19,3 +19,14 @@ This will install `webpacker`, `react-rails`, and the avalon player (view partia
 4. Ingest audiovisual content and see a IIIF viewer render on the work show page.
 
 For a walkthrough of this in a demo application try running through this repository's README: https://github.com/avalonmediasystem/connect2018-workshop
+
+
+# Set up dev / test environment
+This project uses engine cart for testing and development purposes. To generate the .internal_test_app directory do the following
+
+```bash
+export ENGINE_CART_RAILS_OPTIONS="--skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test"
+bundle exec rake engine_cart:generate
+```
+
+Spec and rubocop can then be run using the `rake` command.
