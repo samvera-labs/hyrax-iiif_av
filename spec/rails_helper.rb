@@ -14,6 +14,7 @@ require 'rspec/rails'
 require 'hyrax'
 require 'devise'
 require 'factory_bot'
+require 'rsolr'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
