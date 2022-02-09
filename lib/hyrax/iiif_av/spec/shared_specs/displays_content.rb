@@ -15,6 +15,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
     allow(ability).to receive(:can?).with(:read, solr_document.id).and_return(read_permission)
     allow(presenter).to receive(:parent).and_return(parent_presenter)
     allow(presenter).to receive(:title).and_return(title)
+    allow(presenter).to receive(:latest_file_id).and_return(id)
   end
 
   describe '#display_content' do
