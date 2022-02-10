@@ -30,7 +30,7 @@ RSpec.shared_examples "IiifAv::ControllerBehavior" do
     let(:manifest_factory3) { instance_double("IIIFManifest::V3::ManifestBuilder", to_h: { test: 'manifest3' }) }
 
     before do
-      allow(controller).to receive(:presenter).and_return(presenter)
+      allow(controller).to receive(:iiif_manifest_presenter).and_return(presenter)
       allow(IIIFManifest::ManifestFactory).to receive(:new).with(presenter).and_return(manifest_factory2)
       allow(IIIFManifest::V3::ManifestFactory).to receive(:new).with(presenter).and_return(manifest_factory3)
       request.headers['Accept'] = mime

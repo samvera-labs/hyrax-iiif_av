@@ -47,8 +47,10 @@ module Hyrax
         end
 
         def image_content
+          return nil unless latest_file_id
+
           url = Hyrax.config.iiif_image_url_builder.call(
-            solr_document.id,
+            latest_file_id,
             request.base_url,
             Hyrax.config.iiif_image_size_default
           )
@@ -60,18 +62,20 @@ module Hyrax
         def image_content_v3(url)
           # @see https://github.com/samvera-labs/iiif_manifest
           IIIFManifest::V3::DisplayContent.new(url,
-                                               width: 640,
-                                               height: 480,
+                                               format: image_format(alpha_channels),
+                                               width: width,
+                                               height: height,
                                                type: 'Image',
-                                               iiif_endpoint: iiif_endpoint(solr_document.id))
+                                               iiif_endpoint: iiif_endpoint(latest_file_id))
         end
 
         def image_content_v2(url)
           # @see https://github.com/samvera-labs/iiif_manifest
           IIIFManifest::DisplayImage.new(url,
-                                         width: 640,
-                                         height: 480,
-                                         iiif_endpoint: iiif_endpoint(solr_document.id))
+                                         format: image_format(alpha_channels),
+                                         width: width,
+                                         height: height,
+                                         iiif_endpoint: iiif_endpoint(latest_file_id))
         end
 
         def video_content

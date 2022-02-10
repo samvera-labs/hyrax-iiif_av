@@ -31,14 +31,22 @@ module Hyrax
 
       def manifest
         add_iiif_header
-        super
+
+        headers['Access-Control-Allow-Origin'] = '*'
+
+        json = iiif_manifest_builder.manifest_for(presenter: iiif_manifest_presenter, iiif_manifest_factory: manifest_factory)
+
+        respond_to do |wants|
+          wants.json { render json: json }
+          wants.html { render json: json }
+        end
       end
 
       private
 
         # @return true if the request is for IIIF version 3; false otherwise
         def iiif_version_3?
-          presenter.respond_to?(:iiif_version) ? presenter.iiif_version == 3 : false
+          iiif_manifest_presenter.respond_to?(:iiif_version) ? iiif_manifest_presenter.iiif_version == 3 : false
         end
 
         def iiif_mime
@@ -50,11 +58,19 @@ module Hyrax
           headers['Content-Type'] = iiif_mime
         end
 
-        def manifest_builder
+        # Override this method to return classes instead of instances
+        # This forces the manifest action to call Hyrax::ManifestBuilderService.manifest_for
+        # which allows for the passing in of the manifest factory
+        def iiif_manifest_builder
+          self.class.iiif_manifest_builder ||
+            (Flipflop.cache_work_iiif_manifest? ? Hyrax::CachingIiifManifestBuilder : Hyrax::ManifestBuilderService)
+        end
+
+        def manifest_factory
           if iiif_version_3?
-            ::IIIFManifest::V3::ManifestFactory.new(presenter)
+            ::IIIFManifest::V3::ManifestFactory
           else
-            ::IIIFManifest::ManifestFactory.new(presenter)
+            ::IIIFManifest::ManifestFactory
           end
         end
     end

@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  samvera: samvera/circleci-orb@0.0.4
+  samvera: samvera/circleci-orb@1.0
 jobs:
   bundle_and_test:
     parameters:
@@ -9,11 +9,12 @@ jobs:
         default: 2.5.5
       bundler_version:
         type: string
-        default: 1.17.3
+        default: 2.3.0
         
     executor:
       name: 'samvera/ruby_fcrepo_solr'
       ruby_version: << parameters.ruby_version >>
+      solr_version: 7-slim
 
     working_directory: ~/project
 
@@ -23,21 +24,19 @@ jobs:
     steps:
       - samvera/cached_checkout
           
-      - samvera/bundle_for_gem:
+      - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-          project: hyrax-iiif_av
     
       - samvera/engine_cart_generate:
-          cache_key: v1-internal-test-app-{{ checksum "hyrax-iiif_av.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "lib/generators/hyrax/iiif_av/install_generator.rb" }}
+          cache_key: v2-internal-test-app-{{ checksum "hyrax-iiif_av.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "lib/generators/hyrax/iiif_av/install_generator.rb" }}
 
       - samvera/install_solr_core:
-          solr_config_path: .internal_test_app/solr/config
+          solr_config_path: .internal_test_app/solr/conf
 
-      - samvera/bundle_for_gem:
+      - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-          project: hyrax-iiif_av
           
       - samvera/parallel_rspec
 
@@ -45,4 +44,5 @@ workflows:
   ci:
     jobs:
       - bundle_and_test:
-          name: "ruby2-5-5"
+          name: ruby2-7
+          ruby_version: 2.7.5
