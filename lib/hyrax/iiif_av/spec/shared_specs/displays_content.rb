@@ -41,7 +41,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
       end
 
       context "when the file is a sound recording" do
-        let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000) }
+        let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000, mime_type_ssi: 'audio/mp3') }
         let(:mp3_url) { "http://test.host/iiif_av/content/#{solr_document.id}/mp3" }
         let(:ogg_url) { "http://test.host/iiif_av/content/#{solr_document.id}/ogg" }
 
@@ -61,7 +61,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
       end
 
       context "when the file is a video" do
-        let(:solr_document) { SolrDocument.new(id: '12345', width_is: 640, height_is: 480, duration_tesim: 1000) }
+        let(:solr_document) { SolrDocument.new(id: '12345', width_is: 640, height_is: 480, duration_tesim: 1000, mime_type_ssi: 'video/mp4') }
         let(:mp4_url) { "http://test.host/iiif_av/content/#{id}/mp4" }
         let(:webm_url) { "http://test.host/iiif_av/content/#{id}/webm" }
 
