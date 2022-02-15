@@ -95,6 +95,7 @@ module Hyrax
                                                height: Array(solr_document.height).first.try(:to_i),
                                                duration: Array(solr_document.duration).first.try(:to_i) / 1000.0,
                                                type: 'Video',
+                                               format: solr_document.mime_type,
                                                auth_service: auth_service)
         end
 
@@ -112,6 +113,7 @@ module Hyrax
                                                label: label,
                                                duration: Array(solr_document.duration).first.try(:to_i) / 1000.0,
                                                type: 'Sound',
+                                               format: solr_document.mime_type,
                                                auth_service: auth_service)
         end
 

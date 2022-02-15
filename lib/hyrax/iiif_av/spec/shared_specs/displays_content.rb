@@ -41,7 +41,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
       end
 
       context "when the file is a sound recording" do
-        let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000) }
+        let(:solr_document) { SolrDocument.new(id: '12345', duration_tesim: 1000, mime_type_ssi: 'audio/mp3') }
         let(:mp3_url) { "http://test.host/iiif_av/content/#{solr_document.id}/mp3" }
         let(:ogg_url) { "http://test.host/iiif_av/content/#{solr_document.id}/ogg" }
 
@@ -53,6 +53,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
           expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
           expect(content.length).to eq 2
           expect(content.map(&:type)).to all(eq 'Sound')
+          expect(content.map(&:format)).to all(eq 'audio/mp3')
           expect(content.map(&:duration)).to all(eq 1.000)
           expect(content.map(&:label)).to match_array(['mp3', 'ogg'])
           expect(content.map(&:url)).to match_array([mp3_url, ogg_url])
@@ -60,7 +61,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
       end
 
       context "when the file is a video" do
-        let(:solr_document) { SolrDocument.new(id: '12345', width_is: 640, height_is: 480, duration_tesim: 1000) }
+        let(:solr_document) { SolrDocument.new(id: '12345', width_is: 640, height_is: 480, duration_tesim: 1000, mime_type_ssi: 'video/mp4') }
         let(:mp4_url) { "http://test.host/iiif_av/content/#{id}/mp4" }
         let(:webm_url) { "http://test.host/iiif_av/content/#{id}/webm" }
 
@@ -72,6 +73,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
           expect(content).to all(be_instance_of IIIFManifest::V3::DisplayContent)
           expect(content.length).to eq 2
           expect(content.map(&:type)).to all(eq 'Video')
+          expect(content.map(&:format)).to all(eq 'video/mp4')
           expect(content.map(&:width)).to all(eq 640)
           expect(content.map(&:height)).to all(eq 480)
           expect(content.map(&:duration)).to all(eq 1.000)
