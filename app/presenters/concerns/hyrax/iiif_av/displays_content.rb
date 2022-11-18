@@ -31,19 +31,19 @@ module Hyrax
       def display_content
         return nil unless display_content_allowed?
 
-        return image_content if solr_document.image?
-        return video_content if solr_document.video?
-        return audio_content if solr_document.audio?
+        return image_content if object.image?
+        return video_content if object.video?
+        return audio_content if object.audio?
       end
 
       private
 
         def display_content_allowed?
-          content_supported? && current_ability.can?(:read, id)
+          content_supported? && @ability.can?(:read, id)
         end
 
         def content_supported?
-          solr_document.video? || solr_document.audio? || solr_document.image?
+          object.video? || object.audio? || object.image?
         end
 
         def image_content
@@ -51,12 +51,13 @@ module Hyrax
 
           url = Hyrax.config.iiif_image_url_builder.call(
             latest_file_id,
-            request.base_url,
-            Hyrax.config.iiif_image_size_default
+            hostname,
+            Hyrax.config.iiif_image_size_default,
+            object.mime_type
           )
 
-          # Look at the request and target prezi 2 or 3 for images
-          parent.iiif_version == 3 ? image_content_v3(url) : image_content_v2(url)
+          # UTK only uses prezi 3
+          image_content_v3(url)
         end
 
         def image_content_v3(url)
@@ -66,17 +67,18 @@ module Hyrax
                                                width: width,
                                                height: height,
                                                type: 'Image',
-                                               iiif_endpoint: iiif_endpoint(latest_file_id))
+                                               iiif_endpoint: iiif_endpoint(latest_file_id, base_url: hostname))
         end
 
-        def image_content_v2(url)
-          # @see https://github.com/samvera-labs/iiif_manifest
-          IIIFManifest::DisplayImage.new(url,
-                                         format: image_format(alpha_channels),
-                                         width: width,
-                                         height: height,
-                                         iiif_endpoint: iiif_endpoint(latest_file_id))
-        end
+        ## UTK does not use prezi 2
+        # def image_content_v2(url)
+        #   # @see https://github.com/samvera-labs/iiif_manifest
+        #   IIIFManifest::DisplayImage.new(url,
+        #                                  format: image_format(alpha_channels),
+        #                                  width: width,
+        #                                  height: height,
+        #                                  iiif_endpoint: iiif_endpoint(latest_file_id))
+        # end
 
         def video_content
           # @see https://github.com/samvera-labs/iiif_manifest
@@ -89,13 +91,21 @@ module Hyrax
         end
 
         def video_display_content(_url, label = '')
-          IIIFManifest::V3::DisplayContent.new(Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(solr_document.id, label: label, host: request.base_url),
+          url = Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(object.id, label: label, host: hostname)
+          Site.account.ssl_configured ? url.sub!(/\Ahttp:/, 'https:') : url
+
+          parent_doc = get_parent_solr_doc(file_set_solr_doc: object)
+          width = parent_doc['frame_width_ssm'].first.to_i
+          height = parent_doc['frame_height_ssm'].first.to_i
+          duration = parent_doc['duration_ssm']&.first&.to_f || 400
+
+          IIIFManifest::V3::DisplayContent.new(url,
                                                label: label,
-                                               width: Array(solr_document.width).first.try(:to_i),
-                                               height: Array(solr_document.height).first.try(:to_i),
-                                               duration: Array(solr_document.duration).first.try(:to_i) / 1000.0,
+                                               width: width,
+                                               height: height,
+                                               duration: duration,
                                                type: 'Video',
-                                               format: solr_document.mime_type,
+                                               format: object.mime_type,
                                                auth_service: auth_service)
         end
 
@@ -109,28 +119,39 @@ module Hyrax
         end
 
         def audio_display_content(_url, label = '')
-          IIIFManifest::V3::DisplayContent.new(Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(solr_document.id, label: label, host: request.base_url),
+          url = Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(object.id, label: label, host: hostname)
+          Site.account.ssl_configured ? url.sub!(/\Ahttp:/, 'https:') : url
+
+          parent_doc = get_parent_solr_doc(file_set_solr_doc: object)
+          duration = parent_doc['duration_ssm']&.first&.to_f || 400
+
+          IIIFManifest::V3::DisplayContent.new(url,
                                                label: label,
-                                               duration: Array(solr_document.duration).first.try(:to_i) / 1000.0,
+                                               duration: duration,
                                                type: 'Sound',
-                                               format: solr_document.mime_type,
+                                               format: object.mime_type,
                                                auth_service: auth_service)
         end
 
+        def get_parent_solr_doc(file_set_solr_doc: object)
+          # assumes FileSet has one parent
+          ActiveFedora::SolrService.query("file_set_ids_ssim:(#{file_set_solr_doc.id})").first
+        end
+
         def download_path(extension)
-          Hyrax::Engine.routes.url_helpers.download_url(solr_document, file: extension, host: request.base_url)
+          Hyrax::Engine.routes.url_helpers.download_url(object, file: extension, host: hostname)
         end
 
         def stream_urls
-          return {} unless solr_document['derivatives_metadata_ssi'].present?
-          files_metadata = JSON.parse(solr_document['derivatives_metadata_ssi'])
+          return {} unless object['derivatives_metadata_ssi'].present?
+          files_metadata = JSON.parse(object['derivatives_metadata_ssi'])
           file_locations = files_metadata.select { |f| f['file_location_uri'].present? }
           streams = {}
           if file_locations.present?
             file_locations.each do |f|
               streams[f['label']] = Hyrax::IiifAv.config.iiif_av_url_builder.call(
                 f['file_location_uri'],
-                request.base_url
+                hostname
               )
             end
           end
@@ -140,7 +161,7 @@ module Hyrax
         def auth_service
           {
             "context": "http://iiif.io/api/auth/1/context.json",
-            "@id": Rails.application.routes.url_helpers.new_user_session_url(host: request.base_url, iiif_auth_login: true),
+            "@id": Rails.application.routes.url_helpers.new_user_session_url(host: hostname, iiif_auth_login: true),
             "@type": "AuthCookieService1",
             "confirmLabel": I18n.t('iiif_av.auth.confirmLabel'),
             "description": I18n.t('iiif_av.auth.description'),
@@ -151,12 +172,12 @@ module Hyrax
             "profile": "http://iiif.io/api/auth/1/login",
             "service": [
               {
-                "@id": Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_auth_token_url(id: id, host: request.base_url),
+                "@id": Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_auth_token_url(id: id, host: hostname),
                 "@type": "AuthTokenService1",
                 "profile": "http://iiif.io/api/auth/1/token"
               },
               {
-                "@id": Rails.application.routes.url_helpers.destroy_user_session_url(host: request.base_url),
+                "@id": Rails.application.routes.url_helpers.destroy_user_session_url(host: hostname),
                 "@type": "AuthLogoutService1",
                 "label": I18n.t('iiif_av.auth.logoutLabel'),
                 "profile": "http://iiif.io/api/auth/1/logout"
