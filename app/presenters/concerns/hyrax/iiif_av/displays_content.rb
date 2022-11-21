@@ -63,7 +63,7 @@ module Hyrax
         def image_content_v3(url)
           # @see https://github.com/samvera-labs/iiif_manifest
           IIIFManifest::V3::DisplayContent.new(url,
-                                               format: image_format(alpha_channels),
+                                               format: object.mime_type,
                                                width: width,
                                                height: height,
                                                type: 'Image',
