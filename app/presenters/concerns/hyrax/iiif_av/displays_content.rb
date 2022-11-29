@@ -95,8 +95,8 @@ module Hyrax
           Site.account.ssl_configured ? url.sub!(/\Ahttp:/, 'https:') : url
 
           parent_doc = get_parent_solr_doc(file_set_solr_doc: object)
-          width = parent_doc['frame_width_ssm'].first.to_i
-          height = parent_doc['frame_height_ssm'].first.to_i
+          width = parent_doc['frame_width_ssm']&.first&.to_i || 320
+          height = parent_doc['frame_height_ssm']&.first&.to_i || 240
           duration = parent_doc['duration_ssm']&.first&.to_f || 400
 
           IIIFManifest::V3::DisplayContent.new(url,
