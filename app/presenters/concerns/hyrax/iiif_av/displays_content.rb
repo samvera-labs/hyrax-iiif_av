@@ -95,9 +95,9 @@ module Hyrax
           Site.account.ssl_configured ? url.sub!(/\Ahttp:/, 'https:') : url
 
           parent_doc = get_parent_solr_doc(file_set_solr_doc: object)
-          width = parent_doc['frame_width_ssm']&.first&.to_i || 320
-          height = parent_doc['frame_height_ssm']&.first&.to_i || 240
-          duration = parent_doc['duration_ssm']&.first&.to_f || 400
+          width = parent_doc['frame_width_ssm']&.first&.to_i || Array(object.width).first.try(:to_i) || 320
+          height = parent_doc['frame_height_ssm']&.first&.to_i || Array(object.height).first.try(:to_i) || 240
+          duration = parent_doc['duration_ssm']&.first&.to_f || Array(object.duration).first.try(:to_f) || 400.0
 
           IIIFManifest::V3::DisplayContent.new(url,
                                                label: label,
@@ -123,7 +123,11 @@ module Hyrax
           Site.account.ssl_configured ? url.sub!(/\Ahttp:/, 'https:') : url
 
           parent_doc = get_parent_solr_doc(file_set_solr_doc: object)
-          duration = parent_doc['duration_ssm']&.first&.to_f || 400
+          duration = parent_doc['duration_ssm']&.first&.to_f ||
+            # object.duration should evaluate to something like ["0:01:00"] which will get converted to seconds
+            Time.parse(Array(object.duration).first).seconds_since_midnight ||
+            # 400 seconds is what I've seen on some UTK manifests as a default duration
+            400.0
 
           IIIFManifest::V3::DisplayContent.new(url,
                                                label: label,
