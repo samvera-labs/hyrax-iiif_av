@@ -97,7 +97,7 @@ module Hyrax
           parent_doc = get_parent_solr_doc(file_set_solr_doc: object)
           width = parent_doc['frame_width_ssm']&.first&.to_i || Array(object.width).first.try(:to_i) || 320
           height = parent_doc['frame_height_ssm']&.first&.to_i || Array(object.height).first.try(:to_i) || 240
-          duration = parent_doc['duration_ssm']&.first&.to_f || Array(object.duration).first.try(:to_f) || 400.0
+          duration = conform_duration(parent_doc)
 
           IIIFManifest::V3::DisplayContent.new(url,
                                                label: label,
@@ -123,11 +123,7 @@ module Hyrax
           Site.account.ssl_configured ? url.sub!(/\Ahttp:/, 'https:') : url
 
           parent_doc = get_parent_solr_doc(file_set_solr_doc: object)
-          duration = parent_doc['duration_ssm']&.first&.to_f ||
-            # object.duration should evaluate to something like ["0:01:00"] which will get converted to seconds
-            Time.parse(Array(object.duration).first).seconds_since_midnight ||
-            # 400 seconds is what I've seen on some UTK manifests as a default duration
-            400.0
+          duration = conform_duration(parent_doc)
 
           IIIFManifest::V3::DisplayContent.new(url,
                                                label: label,
@@ -135,6 +131,19 @@ module Hyrax
                                                type: 'Sound',
                                                format: object.mime_type,
                                                auth_service: auth_service)
+        end
+
+        def conform_duration(parent_doc)
+          parent_doc['duration_ssm']&.first&.to_f ||
+          if Array(object.duration).first.include?(':')
+            # if object.duration evaluates to something like ["0:01:00"] which will get converted to seconds
+            Time.parse(Array(object.duration).first).seconds_since_midnight
+          else
+            # handles cases if object.duration evaluates to something like ['25 s']
+            Array(object.duration).first.try(:to_f)
+          end ||
+          # 400 seconds is the current fallback on UTK manifests
+          400.0
         end
 
         def get_parent_solr_doc(file_set_solr_doc: object)
