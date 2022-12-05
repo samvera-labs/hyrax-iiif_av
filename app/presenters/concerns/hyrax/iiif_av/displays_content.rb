@@ -86,7 +86,7 @@ module Hyrax
           if streams.present?
             streams.collect { |label, url| video_display_content(url, label) }
           else
-            [video_display_content(download_path('mp4'), 'mp4'), video_display_content(download_path('webm'), 'webm')]
+            [video_display_content(download_path('mp4'), 'mp4')]
           end
         end
 
@@ -114,7 +114,7 @@ module Hyrax
           if streams.present?
             streams.collect { |label, url| audio_display_content(url, label) }
           else
-            [audio_display_content(download_path('ogg'), 'ogg'), audio_display_content(download_path('mp3'), 'mp3')]
+            [audio_display_content(download_path('mp3'), 'mp3')]
           end
         end
 
@@ -129,13 +129,12 @@ module Hyrax
                                                label: label,
                                                duration: duration,
                                                type: 'Sound',
-                                               format: object.mime_type,
-                                               auth_service: auth_service)
+                                               format: 'audio/mpeg')
         end
 
         def conform_duration(parent_doc)
           parent_doc['duration_ssm']&.first&.to_f ||
-          if Array(object.duration).first.include?(':')
+          if Array(object.duration)&.first&.include?(':')
             # if object.duration evaluates to something like ["0:01:00"] which will get converted to seconds
             Time.parse(Array(object.duration).first).seconds_since_midnight
           else
