@@ -129,7 +129,8 @@ module Hyrax
                                                label: label,
                                                duration: duration,
                                                type: 'Sound',
-                                               format: 'audio/mpeg')
+                                               format: 'audio/mpeg',
+                                               auth_service: auth_service)
         end
 
         def conform_duration(parent_doc)
