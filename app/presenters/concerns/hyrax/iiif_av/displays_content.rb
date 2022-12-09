@@ -134,7 +134,10 @@ module Hyrax
 
         def conform_duration(parent_doc)
           parent_doc['duration_ssm']&.first&.to_f ||
-          if Array(object.duration)&.first&.include?(':')
+          if Array(object.duration)&.first&.count(':') == 3
+            # takes care of milliseconds like ["0:0:01:001"]
+            Time.parse(Array(object.duration).first.sub(/.*\K:/, '.')).seconds_since_midnight
+          elsif Array(object.duration)&.first&.include?(':')
             # if object.duration evaluates to something like ["0:01:00"] which will get converted to seconds
             Time.parse(Array(object.duration).first).seconds_since_midnight
           else
