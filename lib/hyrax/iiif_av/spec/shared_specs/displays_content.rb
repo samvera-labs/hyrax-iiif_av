@@ -133,7 +133,7 @@ RSpec.shared_examples "IiifAv::DisplaysContent" do
 
         context 'with custom image url builder' do
           let(:custom_builder) do
-            ->(file_id, base_url, _size) { "#{base_url}/downloads/#{file_id.split('/').first}" }
+            ->(file_id, base_url, _size, _format) { "#{base_url}/downloads/#{file_id.split('/').first}" }
           end
 
           around do |example|
