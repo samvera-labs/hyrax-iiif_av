@@ -35,4 +35,6 @@ Spec and rubocop can then be run using the `rake` command.
 
 Bug reports and pull requests are welcome on GitHub at <https://github.com/samvera-labs/hyrax-iiif_av>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
-We'd love to accept your contributions, please see our [guide for contributing](https://github.com/samvera-labs/hyrax-iiif_av/blob/main/CONTRIBUTING.md).
+If you're working on PR for this project, create a feature branch off of `main`.
+
+This repository follows the [Samvera Community Code of Conduct](https://samvera.atlassian.net/wiki/spaces/samvera/pages/405212316/Code+of+Conduct) and [language recommendations](https://github.com/samvera-labs/hyrax-iiif_av/blob/main/CONTRIBUTING.md#language).  Please ***do not*** create a branch called `master` for this repository or as part of your pull request; the branch will either need to be removed or renamed before it can be considered for inclusion in the code base and history of this repository.
