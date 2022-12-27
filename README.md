@@ -30,3 +30,9 @@ bundle exec rake engine_cart:generate
 ```
 
 Spec and rubocop can then be run using the `rake` command.
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at <https://github.com/samvera-labs/hyrax-iiif_av>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+We'd love to accept your contributions, please see our [guide for contributing](https://github.com/samvera-labs/hyrax-iiif_av/blob/main/CONTRIBUTING.md).
