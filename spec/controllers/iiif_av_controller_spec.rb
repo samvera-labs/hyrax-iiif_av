@@ -45,7 +45,7 @@ describe Hyrax::IiifAv::IiifAvController, type: :controller do
       end
     end
 
-    it 'returns unauthorized (401) if cannot read the master file' do
+    it 'returns unauthorized (401) if cannot read the preservation file' do
       expect(get(:content, params: { id: file_set_id, label: 'mp4' })).to have_http_status(:unauthorized)
     end
 
@@ -103,7 +103,7 @@ describe Hyrax::IiifAv::IiifAvController, type: :controller do
   end
 
   describe '#auth_token' do
-    it 'returns unauthorized (401) if cannot read the master file' do
+    it 'returns unauthorized (401) if cannot read the preservation file' do
       allow(controller).to receive(:can?).and_return(false)
       expect(get(:auth_token, params: { id: file_set_id, messageId: 1, origin: "https://example.com" })).to have_http_status(:unauthorized)
     end
