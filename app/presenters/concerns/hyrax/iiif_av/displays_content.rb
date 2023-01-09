@@ -49,11 +49,22 @@ module Hyrax
         def image_content
           return nil unless latest_file_id
 
-          url = Hyrax.config.iiif_image_url_builder.call(
-            latest_file_id,
-            request.base_url,
-            Hyrax.config.iiif_image_size_default
-          )
+          url_builder = Hyrax.config.iiif_image_url_builder
+          url = if url_builder.arity == 4
+                  url_builder.call(
+                    latest_file_id,
+                    request.base_url,
+                    Hyrax.config.iiif_image_size_default,
+                    # In Hyrax 3, Hyrax.config.iiif_image_url_builder takes a format argument
+                    image_format(alpha_channels)
+                  )
+                else
+                  url_builder.call(
+                    latest_file_id,
+                    request.base_url,
+                    Hyrax.config.iiif_image_size_default
+                  )
+                end
 
           # Look at the request and target prezi 2 or 3 for images
           parent.iiif_version == 3 ? image_content_v3(url) : image_content_v2(url)

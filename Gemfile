@@ -12,9 +12,6 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# Last revision before version 0.6 was released.  This can be removed once this gem is upgraded to hyrax main (3.0.0.beta2) or support for 0.6 is backported to hyrax 2.x
-gem 'iiif_manifest', git: 'https://github.com/samvera-labs/iiif_manifest.git', ref: '4219eb57ae9fbcd178391f401928040ebe057529'
-
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 # BEGIN ENGINE_CART BLOCK
