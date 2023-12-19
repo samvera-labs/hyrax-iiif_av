@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.license     = 'Apache-2.0'
 
   s.files = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features)/})
+    f.match(%r{^(test|spec|features)/}) || f == 'bin/rails'
   end
 
   s.add_dependency "rails", ">= 5.1", "< 8.0"
