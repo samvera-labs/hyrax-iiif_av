@@ -16,12 +16,12 @@ Gem::Specification.new do |s|
   s.license     = 'Apache-2.0'
 
   s.files = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features)/})
+    f.match(%r{^(test|spec|features)/}) || f == 'bin/rails'
   end
 
-  s.add_dependency "rails", "~>5.1"
+  s.add_dependency "rails", ">= 5.1", "< 8.0"
   s.add_dependency "blacklight"
-  s.add_dependency "hyrax", ">= 2.9", "< 4.0"
+  s.add_dependency "hyrax", ">= 3.5", "< 6.0"
   s.add_dependency "iiif_manifest", "> 0.5"
 
   s.add_development_dependency 'bixby'
